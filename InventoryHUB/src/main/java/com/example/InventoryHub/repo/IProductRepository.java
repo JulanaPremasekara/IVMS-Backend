@@ -15,4 +15,17 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
             "LOWER(p.name) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
             "LOWER(p.skuCode) LIKE LOWER(CONCAT('%', :query, '%'))")
     List<Product> searchProducts(@Param("query") String query);
+    // For the main Inventory Hub list (Active only)
+    List<Product> findAllByIsActiveTrue();
+
+    // For the Archive List (Hidden items only)
+    List<Product> findAllByIsActiveFalse();
+
+    @Query("SELECT p FROM Product p WHERE p.isActive = true AND (p.skuCode LIKE %:query% OR p.name LIKE %:query%)")
+    List<Product> searchActiveForArchive(@Param("query") String query, boolean active);
+
+    // Search both depending on toggle
+    List<Product> findByIsActiveAndNameContainingIgnoreCase(boolean isActive, String name);
+
+
 }

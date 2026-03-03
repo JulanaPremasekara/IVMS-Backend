@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Builder
 @Entity
 @NoArgsConstructor
@@ -40,6 +42,12 @@ public class Product {
     private Integer initialStock;
     private String warehouseLocation;
     private Integer reorderThreshold;
+
+    // Inside Product.java
+    @Column(nullable = false)
+    private boolean isActive = true;
+
+    private LocalDateTime archivedAt;
 
 
 

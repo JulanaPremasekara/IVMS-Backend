@@ -8,4 +8,6 @@ import java.util.List;
 public interface IProductService {
     Product registerProduct(ProductRegistrationDTO dto);
     List<Product> getAllProducts();
+    void archiveProduct(Long productId);
 }
+

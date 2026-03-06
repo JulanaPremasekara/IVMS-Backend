@@ -21,7 +21,10 @@
     <module>Porcurement</module>
     <module>FinancialLedger</module>
     <module>AdminControl</module>
+    <module>Common</module>
+    <module>storage</module>
   </modules>
+
   <build>
     <plugins>
       <plugin>

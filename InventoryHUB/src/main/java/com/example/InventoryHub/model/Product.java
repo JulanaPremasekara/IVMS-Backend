@@ -19,7 +19,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false,name = "sku_code")
     private String skuCode;
 
     private String name;
@@ -38,15 +38,22 @@ public class Product {
     private String description;
 
     // Pricing & Stock
-    private Double unitPrice;
-    private Integer initialStock;
+    @Column(name = "unit_price")
+    private Double unitPrice; // Changed to camelCase for Java standards
+
+    @Column(name = "initial_stock")
+    private Integer initialStock; // Matches 'initial_stock' in DB
+
+    @Column(name = "warehouse_location")
     private String warehouseLocation;
+
+    @Column(name = "reorder_threshold") // Match the underscore in DB if it exists
     private Integer reorderThreshold;
 
-    // Inside Product.java
-    @Column(nullable = false)
+    @Column(name = "is_active", nullable = false)
     private boolean isActive = true;
 
+    @Column(name = "archive_at")
     private LocalDateTime archivedAt;
 
 

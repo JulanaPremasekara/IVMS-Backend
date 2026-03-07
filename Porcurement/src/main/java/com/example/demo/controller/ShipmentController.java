@@ -21,8 +21,8 @@ public class ShipmentController {
         return shipmentService.getActiveShipmentRows();
     }
 
-    @GetMapping("/this-week")
+   @GetMapping("/this-week")
     public List<ActiveShipmentRowDto> getThisWeekShipments() {
         return shipmentService.findByShipmentCommingBetween();
-    }
+   }
 }

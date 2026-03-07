@@ -12,4 +12,5 @@ public class ProductSummaryDTO {
     private Integer currentStock;
     private boolean hasPendingOrders;
     private boolean isActive;
+    private Integer reorderThreshold;
 }

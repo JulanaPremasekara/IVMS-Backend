@@ -24,8 +24,7 @@ public class ArchiveController {
             @RequestParam String query,
             @RequestParam(defaultValue = "true") boolean active) {
 
-        // This logic filters based on the "Showing Active" toggle in your React UI
-        List<Product> results = productRepository.searchActiveForArchive(query, active);
+        List<Product> results = productRepository.findByNameContainingIgnoreCaseOrSkuCodeContainingIgnoreCase(query, query);
         return ResponseEntity.ok(results);
     }
 
@@ -34,5 +33,11 @@ public class ArchiveController {
     public ResponseEntity<String> archive(@PathVariable Long id) {
         productService.archiveProduct(id);
         return ResponseEntity.ok("Discontinued successfully.");
+    }
+    @CrossOrigin(origins = "http://localhost:3000") // Required to stop ERR_FAILED (CORS)
+    @PatchMapping("/archive/{id}")
+    public ResponseEntity<String> archiveProduct(@PathVariable Long id) {
+        productService.archiveProduct(id); // You'll need to create this method in your service
+        return ResponseEntity.ok("Product archived successfully");
     }
 }

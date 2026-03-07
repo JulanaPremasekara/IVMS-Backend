@@ -21,8 +21,7 @@ public class InventorySearchController {
     @GetMapping("/search")
     public List<InventorySearchResponseDTO> searchInventory(@RequestParam String query) {
         // 1. Search DB for matching products
-        List<Product> products = productRepository.searchProducts(query);
-
+        List<Product> products = productRepository.findByNameContainingIgnoreCaseOrSkuCodeContainingIgnoreCase(query, query);
         // 2. Map Entities to DTOs with business logic
         return products.stream().map(p -> {
             // ATP Logic: Currently matching stock, but can be adjusted for pending orders

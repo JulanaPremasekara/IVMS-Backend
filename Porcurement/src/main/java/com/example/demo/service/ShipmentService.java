@@ -64,7 +64,7 @@ public class ShipmentService {
                 .map(shipment -> new ActiveShipmentRowDto(
                         shipment.getPurchaseOrder().getPoNumber()
                 ));
-    }
+   }
 
 
 }

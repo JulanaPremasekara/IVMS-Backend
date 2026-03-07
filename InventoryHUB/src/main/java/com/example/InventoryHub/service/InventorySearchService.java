@@ -18,7 +18,7 @@ public class InventorySearchService {
     private IProductRepository productRepository;
 
     public List<InventorySearchResponseDTO> searchInventory(String query) {
-        List<Product> products = productRepository.searchProducts(query);
+        List<Product> products = productRepository.findByNameContainingIgnoreCaseOrSkuCodeContainingIgnoreCase(query, query);
 
         // Extension 2a: If no results, you could trigger a "Did you mean" logic here
         if (products.isEmpty()) {

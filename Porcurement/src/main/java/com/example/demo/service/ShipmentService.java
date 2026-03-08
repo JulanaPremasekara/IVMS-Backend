@@ -1,18 +1,25 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.ActiveShipmentRowDto;
+import com.example.demo.dto.ArrivalShipmentDto;
+import com.example.demo.dto.ItemDto;
+import com.example.demo.dto.TimeLineEventsDto;
 import com.example.demo.entity.PurchaseOrderItem;
 import com.example.demo.entity.Shipment;
+import com.example.demo.entity.ShipmentTimeLineEvent;
 import com.example.demo.enums.ShipmentStatus;
 
 import com.example.demo.repo.ShipmentRepository;
+import com.example.demo.repo.ShipmentTimelineEventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,10 +28,11 @@ import java.util.stream.Collectors;
 public class ShipmentService {
 
     private final ShipmentRepository shipmentRepository;
+    private final ShipmentTimelineEventRepository shipmentTimelineEventRepository;
 
     public List<ActiveShipmentRowDto> getActiveShipmentRows() {
         List<Shipment> shipments = shipmentRepository.findByStatusIn(
-                List.of(ShipmentStatus.PREPARING, ShipmentStatus.IN_TRANSIT)
+                List.of(ShipmentStatus.APPROVED, ShipmentStatus.IN_TRANSIT)
         );
 
         return shipments.stream().map(s -> {
@@ -53,17 +61,69 @@ public class ShipmentService {
         }).toList();
     }
 
-    public List<ActiveShipmentRowDto> findByShipmentCommingBetween() {
+    public List<ArrivalShipmentDto> findByShipmentCommingBetween() {
         LocalDate today = LocalDate.now();
 
-        LocalDateTime start =today.with(DayOfWeek.MONDAY).atStartOfDay();
-        LocalDateTime end =today.with(DayOfWeek.SUNDAY).atTime(LocalTime.MAX);
+        LocalDate start = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDate end= today.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
 
-        return shipmentRepository.findByArrivalWeek(start,end)
+        return shipmentRepository.findByEstimatedArrivalBetween(start,end)
                 .stream()
-                .map(shipment -> new ActiveShipmentRowDto(
-                        shipment.getPurchaseOrder().getPoNumber()
-                ));
+                .map(shipment -> new ArrivalShipmentDto(
+                        shipment.getId(),
+                        shipment.getPurchaseOrder().getPoNumber(),
+                        shipment.getTrackingId(),
+                        "Stark Industry",
+                        shipment.getEstimatedArrival(),
+                        shipment.getStatus().toString(),
+                        shipment.getPurchaseOrder().getItems().stream()
+                                .map(item->new ItemDto(
+                                        item.getInventoryItemId().toString(),
+                                        item.getSku(),
+                                        item.getQuantity(),
+                                        50
+                                )).toList()
+                )).toList();
+    }
+
+    @Transactional
+    public void updateShipmentStatus(
+            String trackingId,
+            ShipmentStatus newStatus,
+            String location,
+            String note
+    ) {
+        Shipment shipment = shipmentRepository.findByTrackingId(trackingId)
+                .orElseThrow(() -> new RuntimeException("Shipment not found"));
+
+        shipment.setStatus(newStatus);
+
+        ShipmentTimeLineEvent event = new ShipmentTimeLineEvent();
+        event.setShipment(shipment);
+        event.setStatus(newStatus);
+        event.setEventTime(LocalDateTime.now());
+        event.setLocation(location);
+        event.setNote(note);
+
+        shipmentTimelineEventRepository.save(event);
+        shipmentRepository.save(shipment);
+    }
+
+    public List<TimeLineEventsDto> getShipmentTimeLine(String trackingId) {
+
+
+
+        return shipmentTimelineEventRepository.findByShipmentTrackingIdOrderByEventTimeAsc(trackingId)
+                .stream()
+                .map(event -> new TimeLineEventsDto(
+                        event.getStatus().toString(),
+                        event.getEventTime(),
+                        event.getLocation(),
+                        event.getNote(),
+                        event.getShipment().getPurchaseOrder().getItems().stream()
+                                .map(item->item.getSku())
+                                .toList()
+                )).toList();
     }
 
 

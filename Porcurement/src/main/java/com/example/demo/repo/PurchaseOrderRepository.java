@@ -20,5 +20,15 @@ public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Lo
     List<PurchaseOrder> findAllWithItemsOrderByPoNumberDesc();
 
     Optional<PurchaseOrder> findByPoNumber(String poNumber);
+
     boolean existsByPoNumber(String poNumber);
+
+    @Query("""
+           SELECT DISTINCT p
+           FROM PurchaseOrder p
+           LEFT JOIN FETCH p.items
+           LEFT JOIN FETCH p.shipment
+           WHERE p.poNumber = :poNumber
+           """)
+    Optional<PurchaseOrder> findByPoNumberWithItemsAndShipment(String poNumber);
 }

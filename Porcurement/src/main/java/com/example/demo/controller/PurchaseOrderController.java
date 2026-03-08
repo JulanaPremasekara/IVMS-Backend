@@ -1,9 +1,13 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.CreatePurchaseOrderRequest;
+import com.example.demo.dto.PartialReceiptRequest;
 import com.example.demo.dto.PurchaseOrderResponse;
+import com.example.demo.dto.VoidPurchaseOrderRequest;
 import com.example.demo.entity.PurchaseOrder;
 import com.example.demo.service.PurchaseOrderService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,5 +39,22 @@ public class PurchaseOrderController {
     public PurchaseOrder approve(@PathVariable String id,
                                  @RequestParam String supplierUser) {
         return service.approveBySupplier(id, supplierUser);
+    }
+
+    @PostMapping("/save-partial")
+    public ResponseEntity<String> savePartialReceipt(
+            @Valid @RequestBody PartialReceiptRequest request
+    ) {
+        service.savePartialReceipt(request);
+        return ResponseEntity.ok("Partial receipt processed successfully");
+    }
+
+    @PutMapping("/{poId}/void")
+    public ResponseEntity<String> voidPurchaseOrder(
+            @PathVariable String poId,
+            @RequestBody VoidPurchaseOrderRequest request) {
+
+        service.voidPurchaseOrder(poId, request.getNote(), request.getNotifyVendor());
+        return ResponseEntity.ok("PO voided successfully");
     }
 }

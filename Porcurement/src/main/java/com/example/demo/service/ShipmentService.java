@@ -125,6 +125,10 @@ public class ShipmentService {
                                 .toList()
                 )).toList();
     }
+                .map(shipment -> new ActiveShipmentRowDto(
+                        shipment.getPurchaseOrder().getPoNumber()
+                ));
+   }
 
 
 }

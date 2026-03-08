@@ -1,4 +1,4 @@
-package com.example.InventoryHub;
+package com.example.InventoryHub.Config;
 
 
 import org.springframework.context.annotation.Bean;

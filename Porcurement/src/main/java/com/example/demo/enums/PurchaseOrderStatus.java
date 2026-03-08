@@ -1,5 +1,5 @@
 package com.example.demo.enums;
 
 public enum PurchaseOrderStatus {
-    DRAFT, SENT,APPROVED
+    DRAFT, SENT,APPROVED,VOIDED,RECEIVED;
 }

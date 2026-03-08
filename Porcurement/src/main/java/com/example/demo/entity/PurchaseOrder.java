@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 
-@ToString(exclude = "items") // avoid infinite loop
+@ToString(exclude = {"items", "shipment", "outgoingPartialReceipts", "incomingPartialReceipts"})
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class PurchaseOrder {
 
@@ -49,13 +49,11 @@ public class PurchaseOrder {
     @Column(nullable = false)
     private BigDecimal totalAmount;
 
-
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdDate;
 
     @Column(nullable = false, updatable = false)
     private String createdBy;
-
 
     @Builder.Default
     @OneToMany(
@@ -65,11 +63,30 @@ public class PurchaseOrder {
     )
     private List<PurchaseOrderItem> items = new ArrayList<>();
 
-
-    @OneToOne(mappedBy = "purchaseOrder", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToOne(
+            mappedBy = "purchaseOrder",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
     private Shipment shipment;
 
-    // 🔹 Helper methods (still required)
+    /*
+     PARTIAL RECEIPT NAVIGATION
+     */
+
+    @Builder.Default
+    @OneToMany(mappedBy = "previousPurchaseOrder")
+    private List<PartialReceipt> outgoingPartialReceipts = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "newPurchaseOrder")
+    private List<PartialReceipt> incomingPartialReceipts = new ArrayList<>();
+
+    /*
+     HELPER METHODS
+     */
+
     public void addItem(PurchaseOrderItem item) {
         items.add(item);
         item.setPurchaseOrder(this);
@@ -81,14 +98,16 @@ public class PurchaseOrder {
             newItems.forEach(this::addItem);
         }
     }
+
     public void attachShipment(Shipment shipment) {
         this.shipment = shipment;
         shipment.setPurchaseOrder(this);
     }
+
     public void setShipment(Shipment shipment) {
         this.shipment = shipment;
         if (shipment != null) {
-            shipment.setPurchaseOrder(this);   // ✅ sets owning side
+            shipment.setPurchaseOrder(this);
         }
     }
 }

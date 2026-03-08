@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Builder
 
-@ToString(exclude = "purchaseOrder") // avoid infinite recursion
+@ToString(exclude = "purchaseOrder")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class PurchaseOrderItem {
 
@@ -32,9 +32,28 @@ public class PurchaseOrderItem {
 
     private String sku;
 
+    /*
+     quantity = originally ordered quantity
+    */
     @Column(nullable = false)
     private Integer quantity;
 
     @Column(nullable = false)
     private BigDecimal price;
+
+    /*
+     NEW FIELDS FOR RECEIVING
+    */
+
+    @Column(nullable = false)
+    @Builder.Default
+    private Integer receivedQty = 0;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private Integer damagedQty = 0;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private Integer remainingQty = 0;
 }

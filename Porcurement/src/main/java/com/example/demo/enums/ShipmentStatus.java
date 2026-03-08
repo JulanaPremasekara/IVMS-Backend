@@ -1,7 +1,12 @@
 package com.example.demo.enums;
 
 public enum ShipmentStatus {
-    PREPARING,
+    APPROVED,
+    DISPATCHED,
     IN_TRANSIT,
-    DELIVERED
+    CUSTOMS_CLEARANCE,
+    ARRIVED_AT_PORT,
+    OUT_FOR_DELIVERY,
+    DELIVERED,
 }
+

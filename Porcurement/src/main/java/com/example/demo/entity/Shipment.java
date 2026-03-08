@@ -6,6 +6,8 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "shipments")
@@ -43,4 +45,7 @@ public class Shipment {
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdDate;
+
+    @OneToMany(mappedBy = "shipment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ShipmentTimeLineEvent> timelineEvents = new ArrayList<>();
 }

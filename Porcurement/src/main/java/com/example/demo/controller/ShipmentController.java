@@ -49,10 +49,10 @@ public class ShipmentController {
 
         return ResponseEntity.ok("Shipment status updated successfully");
     }
-   @GetMapping("/this-week")
-    public List<ActiveShipmentRowDto> getThisWeekShipments() {
-        return shipmentService.findByShipmentCommingBetween();
-   }
+//   @GetMapping("/this-week")
+//    public List<ActiveShipmentRowDto> getThisWeekShipments() {
+//        return shipmentService.findByShipmentCommingBetween();
+//   }
 }
 
 

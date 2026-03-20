@@ -9,5 +9,7 @@ public interface IProductService {
     Product registerProduct(ProductRegistrationDTO dto);
     List<Product> getAllProducts();
     void archiveProduct(Long productId);
+    void updateStock(Long productId, Integer newQuantity);
+    List<Product> searchProducts(String query);
 }
 

@@ -24,6 +24,7 @@
     <module>Common</module>
     <module>storage</module>
       <module>Discovery</module>
+      <module>Gateway</module>
   </modules>
 
   <build>

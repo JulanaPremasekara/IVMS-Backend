@@ -18,6 +18,11 @@ public class ArchiveController {
     private final IProductService productService;
     private final IProductRepository productRepository;
 
+    @GetMapping("/all")
+    public ResponseEntity<List<Product>> getAllArchived() {
+        return ResponseEntity.ok(productRepository.findByIsActiveFalse());
+    }
+
     // Matches: GET http://localhost:8083/api/v1/archive/search?query=...
     @GetMapping("/search")
     public ResponseEntity<List<Product>> searchProducts(@RequestParam String query) {

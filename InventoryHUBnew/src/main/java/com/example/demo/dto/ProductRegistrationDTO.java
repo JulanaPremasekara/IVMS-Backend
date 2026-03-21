@@ -9,10 +9,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Traditional DTO using Lombok for Getters and Setters.
- * Better compatibility with frameworks that rely on the JavaBean naming convention.
- */
 @Data
 @Builder
 @NoArgsConstructor
@@ -25,19 +21,14 @@ public class ProductRegistrationDTO {
     @NotBlank(message = "Category is required")
     private String category;
 
-    @NotNull(message = "Length is required")
-    @Positive(message = "Length must be positive")
+    // --- Technical Specifications made optional ---
+    // Removed @NotNull and @Positive
     private Double length;
 
-    @NotNull(message = "Width is required")
-    @Positive(message = "Width must be positive")
     private Double width;
 
-    @NotNull(message = "Height is required")
-    @Positive(message = "Height must be positive")
     private Double height;
 
-    
     @Min(value = 0, message = "Power usage cannot be negative")
     private Integer powerUsage;
 
@@ -45,6 +36,7 @@ public class ProductRegistrationDTO {
 
     private String description;
 
+    // --- Critical Fields (Keep these required) ---
     @NotNull(message = "Unit price is required")
     @Positive(message = "Price must be greater than zero")
     private Double unitPrice;

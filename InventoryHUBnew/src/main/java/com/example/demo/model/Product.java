@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.example.demo.model.Category;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

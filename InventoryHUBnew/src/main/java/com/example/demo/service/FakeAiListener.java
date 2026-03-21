@@ -1,6 +1,6 @@
-package com.example.InventoryHub.service;
+package com.example.demo.service;
 
-import com.example.InventoryHub.dto.StockAdjustmentDTO;
+import com.example.demo.dto.StockAdjustmentDTO;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 

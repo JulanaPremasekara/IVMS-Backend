@@ -1,6 +1,6 @@
-package com.example.InventoryHub.service;
+package com.example.demo.service;
 
-import com.example.InventoryHub.dto.ProductSummaryDTO;
+import com.example.demo.dto.ProductSummaryDTO;
 import com.example.demo.dto.InventoryItemDTO; // Your friend's DTO
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;

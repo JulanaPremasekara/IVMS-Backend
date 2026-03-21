@@ -1,13 +1,13 @@
-package com.example.InventoryHub.service;
+package com.example.demo.service;
 
-import com.example.InventoryHub.dto.ProductRegistrationDTO;
-import com.example.InventoryHub.dto.ProductSummaryDTO;
-import com.example.InventoryHub.exception.ResourceNotFoundException;
-import com.example.InventoryHub.model.Category;
-import com.example.InventoryHub.model.Product;
-import com.example.InventoryHub.model.StockProducer;
-import com.example.InventoryHub.repo.ICategoryRepository;
-import com.example.InventoryHub.repo.IProductRepository;
+import com.example.demo.dto.ProductRegistrationDTO;
+import com.example.demo.dto.ProductSummaryDTO;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.Category;
+import com.example.demo.model.Product;
+import com.example.demo.model.StockProducer;
+import com.example.demo.repo.ICategoryRepository;
+import com.example.demo.repo.IProductRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import java.util.List;

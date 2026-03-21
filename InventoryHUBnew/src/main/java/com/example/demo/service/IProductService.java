@@ -1,7 +1,7 @@
-package com.example.InventoryHub.service;
+package com.example.demo.service;
 
-import com.example.InventoryHub.dto.ProductRegistrationDTO;
-import com.example.InventoryHub.model.Product;
+import com.example.demo.dto.ProductRegistrationDTO;
+import com.example.demo.model.Product;
 
 import java.util.List;
 

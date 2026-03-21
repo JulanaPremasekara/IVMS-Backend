@@ -1,8 +1,8 @@
-package com.example.InventoryHub.model;
+package com.example.demo.model;
 
-import com.example.InventoryHub.Config.RabbitMQConfig;
-import com.example.InventoryHub.dto.ProductSummaryDTO;
-import com.example.InventoryHub.service.ProcurementClient;
+import com.example.demo.Config.RabbitMQConfig;
+import com.example.demo.dto.ProductSummaryDTO;
+import com.example.demo.service.ProcurementClient;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

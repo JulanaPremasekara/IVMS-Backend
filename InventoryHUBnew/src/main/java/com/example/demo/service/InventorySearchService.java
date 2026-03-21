@@ -1,8 +1,8 @@
-package com.example.InventoryHub.service;
+package com.example.demo.service;
 
-import com.example.InventoryHub.dto.InventorySearchResponseDTO;
-import com.example.InventoryHub.model.Product;
-import com.example.InventoryHub.repo.IProductRepository;
+import com.example.demo.dto.InventorySearchResponseDTO;
+import com.example.demo.model.Product;
+import com.example.demo.repo.IProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

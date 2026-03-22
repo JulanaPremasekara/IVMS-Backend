@@ -23,6 +23,7 @@ public class ArchiveController {
         return ResponseEntity.ok(productRepository.findByIsActiveFalse());
     }
 
+
     // Matches: GET http://localhost:8083/api/v1/archive/search?query=...
     @GetMapping("/search")
     public ResponseEntity<List<Product>> searchProducts(@RequestParam String query) {

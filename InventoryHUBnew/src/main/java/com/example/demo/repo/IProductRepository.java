@@ -20,6 +20,5 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
     // Fetches only products where isActive is false
     List<Product> findByIsActiveFalse();
 
-    // Fetches only products where isActive is true (for your main Hub)
     List<Product> findByIsActiveTrue();
 }

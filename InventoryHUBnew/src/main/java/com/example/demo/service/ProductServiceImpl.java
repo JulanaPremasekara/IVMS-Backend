@@ -2,14 +2,18 @@ package com.example.demo.service;
 
 import com.example.demo.dto.ProductRegistrationDTO;
 import com.example.demo.dto.ProductSummaryDTO;
+import com.example.demo.dto.StockAdjustmentDTO;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Category;
 import com.example.demo.model.Product;
 import com.example.demo.model.StockProducer;
 import com.example.demo.repo.ICategoryRepository;
 import com.example.demo.repo.IProductRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -48,6 +52,7 @@ public class ProductServiceImpl implements IProductService {
 
         // Soft Delete: Lombok converts 'boolean isActive' to 'setActive'
         product.setActive(false);
+        product.setArchivedAt(LocalDateTime.now());
         productRepository.save(product);
 
         System.out.println("Product " + productId + " successfully archived.");
@@ -63,7 +68,7 @@ public class ProductServiceImpl implements IProductService {
                     return categoryRepository.save(newCat);
                 });
 
-        String sku = "INV-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        String sku = "SKU-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
 
         Product product = Product.builder()
                 .skuCode(sku)
@@ -93,7 +98,7 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     @Transactional
-    public void updateStock(Long id, Integer quantity) {
+    public Product updateStock(Long id, Integer quantity) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
@@ -108,10 +113,15 @@ public class ProductServiceImpl implements IProductService {
                 .reorderThreshold(product.getReorderThreshold())
                 .skuCode(product.getSkuCode())
                 .build());
+        return product;
     }
 
     @Override
     public List<Product> searchProducts(String query) {
+        if (query == null || query.trim().isEmpty()) {
+            return List.of();
+        }
+
         return productRepository.findByNameContainingIgnoreCaseOrSkuCodeContainingIgnoreCase(query, query);
     }
 
@@ -129,5 +139,19 @@ public class ProductServiceImpl implements IProductService {
     public List<Product> getArchivedProducts() {
         // This calls the repository method we added earlier
         return productRepository.findAllByIsActiveFalse();
+    }
+
+    @Override
+    public Product updateStockThresholds(StockAdjustmentDTO dto) {
+        Product product = productRepository.findById(dto.getProductId())
+                .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+
+        if (dto.getNewSafetyLimit() < 0) {
+            throw new IllegalArgumentException("Safety limit cannot be negative");
+        }
+
+        product.setReorderThreshold(dto.getNewSafetyLimit());
+
+        return productRepository.save(product);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.ProductRegistrationDTO;
+import com.example.demo.dto.StockAdjustmentDTO;
 import com.example.demo.model.Product;
 
 import java.util.List;
@@ -9,7 +10,7 @@ public interface IProductService {
     Product registerProduct(ProductRegistrationDTO dto);
     List<Product> getAllProducts();
     void archiveProduct(Long productId);
-    void updateStock(Long productId, Integer newQuantity);
+    Product updateStock(Long productId, Integer newQuantity);
     List<Product> searchProducts(String query);
     void restoreProduct(Long productId);
 
@@ -17,5 +18,6 @@ public interface IProductService {
     List<Product> getArchivedProducts();
 
 
+    Product updateStockThresholds(StockAdjustmentDTO dto);
 }
 

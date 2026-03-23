@@ -35,15 +35,14 @@ public class Vendor {
     @Column(nullable = false)
     private String status;
 
-    // --- NEW PERFORMANCE METRICS FIELDS ---
-    // These will be initialized to 0 for new vendors
-    private Double performanceScore;      // e.g., 0.0 to 100.0
-    private Double avgLeadTime;           // e.g., 0.0 days
-    private Integer delayProbability;     // e.g., 0 to 100
-    private Double reliabilityRating;     // e.g., 0.0 to 5.0
-    private Integer totalOrders;          // Used to identify "New" status (0 = New)
+    //PERFORMANCE METRICS FIELDS ---
+    private Double performanceScore;
+    private Double avgLeadTime;
+    private Integer delayProbability;
+    private Double reliabilityRating;
+    private Integer totalOrders;
 
-    // --- EXISTING FIELDS ---
+    //EXISTING FIELDS
     private String blacklistReason;
 
     @UpdateTimestamp

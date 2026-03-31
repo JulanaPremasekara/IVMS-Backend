@@ -1,4 +1,4 @@
-package com.example.InventoryHub;
+package com.example.demo;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.boot.CommandLineRunner;

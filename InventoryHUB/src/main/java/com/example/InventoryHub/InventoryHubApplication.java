@@ -1,14 +1,12 @@
-package com.example.InventoryHub;
+package com.example.demo;
 
-import com.example.InventoryHub.model.StockProducer;
+import com.example.demo.model.StockProducer;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 
-@EnableDiscoveryClient
 @SpringBootApplication
 public class InventoryHubApplication {
 

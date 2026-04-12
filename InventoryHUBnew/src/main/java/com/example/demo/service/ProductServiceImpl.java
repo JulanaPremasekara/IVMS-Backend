@@ -154,4 +154,10 @@ public class ProductServiceImpl implements IProductService {
 
         return productRepository.save(product);
     }
+    @Override
+    public Product getProductById (Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+        return product;
+    }
 }

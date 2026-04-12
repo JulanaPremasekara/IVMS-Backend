@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.ProductRegistrationDTO;
+import com.example.demo.dto.ProductSummaryDTO;
 import com.example.demo.dto.StockAdjustmentDTO;
 import com.example.demo.model.Product;
 
@@ -19,5 +20,7 @@ public interface IProductService {
 
 
     Product updateStockThresholds(StockAdjustmentDTO dto);
+
+    Product getProductById(Long id);
 }
 

@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.Config.RabbitMQConfig;
 import com.example.demo.dto.ProductRegistrationDTO;
+import com.example.demo.dto.ProductSummaryDTO;
 import com.example.demo.dto.StockAdjustmentDTO;
 import com.example.demo.model.Product;
 import com.example.demo.service.IProductService;
@@ -67,6 +68,12 @@ public class ProductController {
         // Fulfills the "Archive Management" view requirements
         List<Product> archived = productService.getArchivedProducts();
         return ResponseEntity.ok(archived);
+    }
+
+
+    @GetMapping("/Item/{id}")
+    public ResponseEntity<Product> getItem(@PathVariable Long id) {
+        return ResponseEntity.ok(productService.getProductById(id));
     }
 
 }

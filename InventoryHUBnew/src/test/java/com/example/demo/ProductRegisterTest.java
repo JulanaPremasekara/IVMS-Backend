@@ -113,6 +113,7 @@ class ProductRegisterTest {
         verify(categoryRepository, times(1)).save(any(Category.class));
         verify(productRepository, times(1)).save(any(Product.class));
     }
+
     // Helper method for clean code
     private ProductRegistrationDTO createValidDTO() {
         return ProductRegistrationDTO.builder()

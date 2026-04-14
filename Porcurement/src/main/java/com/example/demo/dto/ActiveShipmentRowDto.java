@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 public record ActiveShipmentRowDto(
         String poNumber,
-        Long vendorId,
+        String vendorId,
         String items,        // you can change to List later
         Integer qty,
         String origin,

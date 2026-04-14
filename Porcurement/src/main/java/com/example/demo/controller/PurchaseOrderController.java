@@ -57,4 +57,18 @@ public class PurchaseOrderController {
         service.voidPurchaseOrder(poId, request.getNote(), request.getNotifyVendor());
         return ResponseEntity.ok("PO voided successfully");
     }
+
+    @GetMapping("/{id}/item")
+    public ResponseEntity<PurchaseOrderResponse> getPurchaseOrder(
+            @PathVariable String id){
+        return service.getOrderByID(id);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PurchaseOrder> updatePurchaseOrder(
+            @PathVariable String id,
+            @RequestBody CreatePurchaseOrderRequest req) {
+        return ResponseEntity.ok(service.updatePurchaseOrder(id, req));
+    }
+
 }

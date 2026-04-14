@@ -1,9 +1,8 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.ActiveShipmentRowDto;
-import com.example.demo.dto.ArrivalShipmentDto;
-import com.example.demo.dto.ItemDto;
-import com.example.demo.dto.TimeLineEventsDto;
+import com.example.demo.config.InventoryClient;
+import com.example.demo.config.VendorClient;
+import com.example.demo.dto.*;
 import com.example.demo.entity.PurchaseOrderItem;
 import com.example.demo.entity.Shipment;
 import com.example.demo.entity.ShipmentTimeLineEvent;
@@ -29,6 +28,10 @@ public class ShipmentService {
 
     private final ShipmentRepository shipmentRepository;
     private final ShipmentTimelineEventRepository shipmentTimelineEventRepository;
+    private final InventoryClient inventoryClient;
+    private final VendorClient vendorClient;
+
+
 
     public List<ActiveShipmentRowDto> getActiveShipmentRows() {
         List<Shipment> shipments = shipmentRepository.findByStatusIn(
@@ -47,9 +50,10 @@ public class ShipmentService {
                                     + " x" + i.getQuantity())
                             .collect(Collectors.joining(", "));
 
+            VendorResponse  vendorResponse = vendorClient.getVendor(po.getVendorId());
             return new ActiveShipmentRowDto(
                     po.getPoNumber(),
-                    po.getVendorId(),
+                    vendorResponse.getCompanyName(),
                     itemsText,
                     totalQty,
                     s.getOrigin(),
@@ -67,18 +71,21 @@ public class ShipmentService {
         LocalDate start = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
         LocalDate end= today.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
 
+
         return shipmentRepository.findByEstimatedArrivalBetween(start,end)
                 .stream()
                 .map(shipment -> new ArrivalShipmentDto(
                         shipment.getId(),
                         shipment.getPurchaseOrder().getPoNumber(),
                         shipment.getTrackingId(),
-                        "Stark Industry",
+                        vendorClient.getVendor(shipment.getPurchaseOrder().getVendorId())
+                                .getCompanyName(),
                         shipment.getEstimatedArrival(),
                         shipment.getStatus().toString(),
                         shipment.getPurchaseOrder().getItems().stream()
                                 .map(item->new ItemDto(
-                                        item.getInventoryItemId().toString(),
+                                        item.getId(),
+                                        inventoryClient.getInventoryItemResponse(item.getInventoryItemId()).getName(),
                                         item.getSku(),
                                         item.getQuantity(),
                                         50

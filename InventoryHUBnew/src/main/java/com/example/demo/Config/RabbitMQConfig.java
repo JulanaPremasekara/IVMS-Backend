@@ -8,6 +8,8 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.JacksonJsonMessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
@@ -59,9 +61,17 @@ public class RabbitMQConfig {
         template.setMessageConverter(messageConverter());
         return template;
     }
-    // Add this inside your RabbitMQConfig class
-    @Bean
-    public WebClient.Builder webClientBuilder() {
-        return WebClient.builder();
-    }
+//    // Add this inside your RabbitMQConfig class
+//    @Bean
+//    public WebClient.Builder rabbitWebClientBuilder() {
+//        return WebClient.builder()
+//                .baseUrl("http://your-rabbitmq-api-url.com") // Optional: set a base URL
+//                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+//    }
+//
+//    // Example of how you might use it in the same class
+//    @Bean
+//    public WebClient rabbitWebClient(WebClient.Builder rabbitWebClientBuilder) {
+//        return rabbitWebClientBuilder.build();
+//    }
 }

@@ -180,7 +180,22 @@ class PurchaseOrderServiceTest {
             when(repo.countByCreatedDateBetween(any(LocalDateTime.class), any(LocalDateTime.class)))
                     .thenReturn(0L);
 
-            when(shipmentRepo.findByTrackingId(anyString())).thenReturn(Optional.empty());
+            when(shipmentRepo.findByTrackingId(anyString())).thenAnswer(invocation -> {
+                String trackingId = invocation.getArgument(0);
+
+                Shipment shipment = Shipment.builder()
+                        .vendorId(purchaseOrder.getVendorId())
+                        .origin("TBD")
+                        .destination("TBD")
+                        .status(ShipmentStatus.APPROVED)
+                        .trackingId(trackingId)
+                        .estimatedArrival(purchaseOrder.getExpectedDeliveryDate())
+                        .createdDate(LocalDateTime.now())
+                        .build();
+
+                shipment.setPurchaseOrder(purchaseOrder);
+                return Optional.of(shipment);
+            });
             when(repo.save(any(PurchaseOrder.class))).thenAnswer(invocation -> invocation.getArgument(0));
             when(shipmentRepo.save(any(Shipment.class))).thenAnswer(invocation -> invocation.getArgument(0));
             when(shipmentTimelineEventRepository.save(any(ShipmentTimeLineEvent.class)))

@@ -1,0 +1,26 @@
+package com.example.demo.repo;
+
+import com.example.demo.model.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface IProductRepository extends JpaRepository<Product, Long> {
+
+    // This handles partial words (LIKE %query%) and case sensitivity (IgnoreCase)
+    // It searches BOTH Name and SKU.
+    List<Product> findByNameContainingIgnoreCaseOrSkuCodeContainingIgnoreCase(String name, String sku);
+
+    // Keep your status-based lists for the main dashboard
+    List<Product> findAllByIsActiveTrue();
+    List<Product> findAllByIsActiveFalse();
+
+    // Fetches only products where isActive is false
+    List<Product> findByIsActiveFalse();
+
+    List<Product> findByIsActiveTrue();
+    Optional<Product> findBySkuCode(String skuCode);
+}

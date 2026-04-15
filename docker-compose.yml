@@ -1,0 +1,16 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: ivms-mysql
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: Inventory
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: ivms-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"

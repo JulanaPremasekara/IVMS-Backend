@@ -20,12 +20,12 @@ public class InventoryHubApplication {
 		return new ModelMapper();
 	}
 
-	@Bean
-	CommandLineRunner testQueue(StockProducer producer) {
-		return args -> {
-			// We are sending a simple "Hello" to the queue
-			producer.publishStockUpdate("Test: New SKU Registered!");
-		};
-	}
+//	@Bean
+//	CommandLineRunner testQueue(StockProducer producer) {
+//		return args -> {
+//			// We are sending a simple "Hello" to the queue
+//			producer.publishStockUpdate("Test: New SKU Registered!");
+//		};
+//	}
 
 }
